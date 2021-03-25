@@ -5,16 +5,26 @@ namespace Modules\Movie\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Movie\Repositories\MoviesRepository;
 
 class MovieController extends Controller
 {
+    protected $repository;
+  
+    public function __construct(MoviesRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('movie::index');
+        $movies = $this->repository->paginate($request);
+        return view('movie::index', compact('movies'));
+        // return view('movie::index');
     }
 
     /**
@@ -33,7 +43,7 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**

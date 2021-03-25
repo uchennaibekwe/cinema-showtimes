@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Cinema\Models;
+namespace Modules\Movie\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

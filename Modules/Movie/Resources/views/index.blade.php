@@ -5,5 +5,9 @@
 
     <p>
         This view is loaded from module: {!! config('movie.name') !!}
+
+        @foreach ($movies as $movie)
+            {{ $movie->title }}
+        @endforeach
     </p>
 @endsection
