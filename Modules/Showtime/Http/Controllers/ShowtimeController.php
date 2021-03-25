@@ -5,9 +5,17 @@ namespace Modules\Showtime\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Showtime\Repositories\ShowtimesRepository;
+use Modules\Showtime\Http\Requests\CreateShowtimeRequest;
 
 class ShowtimeController extends Controller
 {
+    protected $repository;
+  
+    public function __construct(ShowtimesRepository $repository)
+    {
+        $this->repository = $repository;
+    }
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -31,9 +39,15 @@ class ShowtimeController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(CreateShowtimeRequest $request)
     {
-        //
+        try {
+            $this->repository->store($request);
+            return redirect()->route('movies.show', ['movie' => $request->movie_id])->with('success', 'Successful!');
+
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getStatus());
+        }
     }
 
     /**

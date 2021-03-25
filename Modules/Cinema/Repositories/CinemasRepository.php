@@ -16,7 +16,7 @@ class CinemasRepository extends AppRepository
     }
     
     /**
-     * set payload data for posts table.
+     * set payload data for cinemas table.
      * 
      * @param Request $request [description]
      * @return array of data for saving.

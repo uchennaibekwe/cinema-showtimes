@@ -34,7 +34,7 @@ class AppRepository
      */
     public function paginate(Request $request)
     {
-        return $this->model->paginate($request->input('limit', 10));
+        return $this->model->orderBy('created_at', 'desc')->paginate($request->input('limit'));
     }
     /**
      * create new record in database.
@@ -73,7 +73,7 @@ class AppRepository
      */
     public function show($id)
     {
-        return $this->model->findOrFail($id);
+        return $this->model->with('showtimes')->findOrFail($id);
     }
     /**
      * Delete item by primary key id.
@@ -94,5 +94,11 @@ class AppRepository
     protected function setDataPayload(Request $request)
     {
         return $request->all();
+    }
+
+    // Eager load database relationships
+    public function with($relations)
+    {
+        return $this->model->with($relations);
     }
 }

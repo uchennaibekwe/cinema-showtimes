@@ -15,18 +15,11 @@ class ShowtimesRepository extends AppRepository
         $this->model = $model;
     }
     
-    /**
-     * set payload data for posts table.
-     * 
-     * @param Request $request [description]
-     * @return array of data for saving.
-     */
-    protected function setDataPayload(Request $request)
+
+    public function store(Request $request)
     {
-        return [
-            'cinema_id' => $request->input('cinema_id'),
-            'movie_id' => $request->input('movie_id'),
-            'time' => $request->input('time'),
-        ];
+        $item = $this->model;
+        $item->updateOrCreate($request->only('movie_id', 'cinema_id'), $request->only('time'));
+        return $item;
     }
 }

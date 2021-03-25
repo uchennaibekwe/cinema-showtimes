@@ -12,10 +12,10 @@ class Showtime extends Model
     protected $guarded = [];
 
     public function movie() {
-        return $this->belongsTo(Modules\Movie\Models\Movie::class);
+        return $this->belongsTo(\Modules\Movie\Models\Movie::class);
     }
 
     public function cinema() {
-        return $this->belongsTo(Modules\Cinema\Models\Cinema::class);
+        return $this->belongsTo(\Modules\Cinema\Models\Cinema::class);
     }
 }

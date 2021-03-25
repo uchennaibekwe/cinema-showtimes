@@ -12,6 +12,6 @@ class Cinema extends Model
     protected $guarded = [];
 
     public function showtimes() {
-        return $this->hasMany(Modules\Showtime\Models\Showtime::class);
+        return $this->hasMany(\Modules\Showtime\Models\Showtime::class);
     }
 }

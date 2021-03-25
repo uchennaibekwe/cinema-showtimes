@@ -6,6 +6,10 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Movie\Repositories\MoviesRepository;
+use Modules\Movie\Http\Requests\CreateMovieRequest;
+
+use Modules\Cinema\Repositories\CinemasRepository;
+use Modules\Cinema\Models\Cinema;
 
 class MovieController extends Controller
 {
@@ -22,18 +26,18 @@ class MovieController extends Controller
      */
     public function index(Request $request)
     {
-        $movies = $this->repository->paginate($request);
+        $movies = $this->repository->with('showtimes')->paginate($request->limit);
         return view('movie::index', compact('movies'));
-        // return view('movie::index');
     }
 
     /**
      * Show the form for creating a new resource.
      * @return Renderable
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('movie::create');
+        $movies = $this->repository->paginate($request);
+        return view('movie::create', compact('movies'));
     }
 
     /**
@@ -41,9 +45,15 @@ class MovieController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(CreateMovieRequest $request)
     {
-        
+        try {
+            $this->repository->store($request);
+            return redirect()->route('movies.create')->with('success', 'Successful!');
+
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getStatus());
+        }
     }
 
     /**
@@ -51,9 +61,11 @@ class MovieController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        return view('movie::show');
+        $movie = $this->repository->show($id);
+        $cinemas = Cinema::all();
+        return view('movie::show', compact('movie', 'cinemas'));
     }
 
     /**

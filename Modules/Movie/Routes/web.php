@@ -11,6 +11,4 @@
 |
 */
 
-Route::prefix('movie')->group(function() {
-    Route::get('/', 'MovieController@index');
-});
+Route::resource('movies', MovieController::class)->except('edit', 'update', 'destroy');
